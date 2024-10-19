@@ -97,9 +97,23 @@ def load_command_specs_from_yaml(file_path: Path) -> list[CommandSpec]:
 
 
 @click.group()
+@click.option(
+    "-d",
+    "--dryrun",
+    default=False,
+    is_flag=True,
+    help="dry run mode, only show the rendered command",
+)
 @click.version_option()
-def cli():
+@click.pass_context
+def cli(ctx, dryrun):
     "Turn shell script into cli command"
+
+    # ensure that ctx.obj exists and is a dict (in case `cli()` is called
+    # by means other than the `if` block below)
+    ctx.ensure_object(dict)
+
+    ctx.obj["DRYRUN"] = dryrun
 
 
 @cli.command()
@@ -115,10 +129,19 @@ def info():
 
 def add_command(cli, spec: CommandSpec):
     @cli.command(name=spec.name, help=spec.help)
-    def command_func(**kwargs):
+    @click.pass_context
+    def command_func(ctx, **kwargs):
+        is_dryrun = ctx.obj["DRYRUN"]
+
+        if is_dryrun:
+            click.echo(":dry run mode:")
+
         template = Template(spec.command)
         rendered = template.render(kwargs)
-        # click.echo(rendered)
+
+        if is_dryrun:
+            click.echo(rendered)
+            return
 
         # run the shell script
         for line in run_command(rendered):
