@@ -172,7 +172,6 @@ def add_command(cli, spec: CommandSpec):
 config_file_path = get_config_file_path()
 if not config_file_path:
     click.echo("No config file found")
-    sys.exit(1)
 
 specs = load_command_specs_from_yaml(config_file_path)
 
