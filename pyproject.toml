@@ -1,5 +1,5 @@
 [project]
-name = "clier"
+name = "clias"
 version = "0.1.0a"
 description = "Turn shell script into cli command"
 readme = "README.md"
@@ -15,13 +15,13 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/kj-9/clier"
-Changelog = "https://github.com/kj-9/clier/releases"
-Issues = "https://github.com/kj-9/clier/issues"
-CI = "https://github.com/kj-9/clier/actions"
+Homepage = "https://github.com/kj-9/clias"
+Changelog = "https://github.com/kj-9/clias/releases"
+Issues = "https://github.com/kj-9/clias/issues"
+CI = "https://github.com/kj-9/clias/actions"
 
 [project.scripts]
-clier = "clier.cli:cli"
+clias = "clias.cli:cli"
 
 [project.optional-dependencies]
 test = ["pytest", "pre-commit", "cogapp"]

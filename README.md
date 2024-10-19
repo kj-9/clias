@@ -1,34 +1,34 @@
-# clier
+# clias
 
-[![PyPI](https://img.shields.io/pypi/v/clier.svg)](https://pypi.org/project/clier/)
-[![Changelog](https://img.shields.io/github/v/release/kj-9/clier?include_prereleases&label=changelog)](https://github.com/kj-9/clier/releases)
-[![Tests](https://github.com/kj-9/clier/actions/workflows/ci.yml/badge.svg)](https://github.com/kj-9/clier/actions/workflows/ci.yml)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/kj-9/clier/blob/master/LICENSE)
+[![PyPI](https://img.shields.io/pypi/v/clias.svg)](https://pypi.org/project/clias/)
+[![Changelog](https://img.shields.io/github/v/release/kj-9/clias?include_prereleases&label=changelog)](https://github.com/kj-9/clias/releases)
+[![Tests](https://github.com/kj-9/clias/actions/workflows/ci.yml/badge.svg)](https://github.com/kj-9/clias/actions/workflows/ci.yml)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/kj-9/clias/blob/master/LICENSE)
 
-Turn shell script into cli command
+Turn shell script into CLIs
 
 ## Installation
 
 Install this tool using `pip`:
 ```bash
-pip install clier
+pip install clias
 ```
 ## Usage
 
 For help, run:
 <!-- [[[cog
 import cog
-from clier import cli
+from clias import cli
 from click.testing import CliRunner
 runner = CliRunner()
 result = runner.invoke(cli.cli, ["--help"])
-help = result.output.replace("Usage: cli", "Usage: clier")
+help = result.output.replace("Usage: cli", "Usage: clias")
 cog.out(
     f"```bash\n{help}\n```"
 )
 ]]] -->
 ```bash
-Usage: clier [OPTIONS] COMMAND [ARGS]...
+Usage: clias [OPTIONS] COMMAND [ARGS]...
 
   Turn shell script into cli command
 
@@ -38,20 +38,23 @@ Options:
   --help        Show this message and exit.
 
 Commands:
-  info  Show the clier config file path to be loaded
+  info        Show the clier config file path to be loaded
+  my-add      add command
+  my-echo     echo command
+  show-shell  run clier shell
 
 ```
 <!-- [[[end]]] -->
 
 You can also use:
 ```bash
-python -m clier --help
+python -m clias --help
 ```
 ## Development
 
 To contribute to this tool, first checkout the code. Then create a new virtual environment:
 ```bash
-cd clier
+cd clias
 python -m venv venv
 source venv/bin/activate
 ```
