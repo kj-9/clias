@@ -11,18 +11,23 @@ from clier.run import run_command
 
 
 @dataclass
-class ClickFuncArgs:
-    arg: list[str]
-    kwargs: dict[str, str]
+class OptionSpec:
+    name: list[str]
+    help: str
+
+
+@dataclass
+class ArgumentSpec:
+    name: str
 
 
 @dataclass
 class CommandSpec:
     name: str
     help: str
-    shell: str
-    arguments: list[ClickFuncArgs]
-    options: list[ClickFuncArgs]
+    arguments: list[ArgumentSpec]
+    options: list[OptionSpec]
+    command: str
 
 
 def get_config_file_path() -> Path | None:
@@ -57,12 +62,12 @@ def load_command_specs_from_yaml(file_path: Path) -> list[CommandSpec]:
 
     command_specs = []
     for command in config["commands"]:
-        arguments = [ClickFuncArgs(**arg) for arg in command["arguments"]]
-        options = [ClickFuncArgs(**opt) for opt in command["options"]]
+        arguments = [ArgumentSpec(**arg) for arg in command.get("arguments", [])]
+        options = [OptionSpec(**opt) for opt in command.get("options", [])]
         command_spec = CommandSpec(
             name=command["name"],
             help=command["help"],
-            shell=command["shell"],
+            command=command["command"],
             arguments=arguments,
             options=options,
         )
@@ -88,14 +93,10 @@ def info():
     click.echo(file_path.absolute())
 
 
-def add_command(spec: CommandSpec):
+def add_command(cli, spec: CommandSpec):
     @cli.command(name=spec.name, help=spec.help)
     def command_func(**kwargs):
-        # click.echo(spec.shell)
-        # click.echo(kwargs)
-
-        # # use jinja to render the shell script
-        template = Template(spec.shell)
+        template = Template(spec.command)
         rendered = template.render(kwargs)
         # click.echo(rendered)
 
@@ -104,24 +105,23 @@ def add_command(spec: CommandSpec):
             click.echo(line)
 
     for argument in spec.arguments:
-        command_func = click.argument(*argument.arg, **argument.kwargs)(command_func)
+        command_func = click.argument(argument.name)(command_func)
 
     for option in spec.options:
-        command_func = click.option(*option.arg, **option.kwargs)(command_func)
+        kwargs = option.__dict__
+        name = kwargs.pop("name")
+        command_func = click.option(*name, **kwargs)(command_func)
 
     return command_func
 
 
-def create_and_run_cli():
-    # dynamically create commands
-    config_file_path = get_config_file_path()
-    if not config_file_path:
-        click.echo("No config file found")
-        sys.exit(1)
+# dynamically create commands
+config_file_path = get_config_file_path()
+if not config_file_path:
+    click.echo("No config file found")
+    sys.exit(1)
 
-    specs = load_command_specs_from_yaml(config_file_path)
+specs = load_command_specs_from_yaml(config_file_path)
 
-    for spec in specs:
-        add_command(spec)
-
-    return cli()
+for spec in specs:
+    add_command(cli, spec)

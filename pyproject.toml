@@ -21,7 +21,7 @@ Issues = "https://github.com/kj-9/clier/issues"
 CI = "https://github.com/kj-9/clier/actions"
 
 [project.scripts]
-clier = "clier.cli:create_and_run_cli"
+clier = "clier.cli:cli"
 
 [project.optional-dependencies]
 test = ["pytest", "pre-commit", "cogapp"]
