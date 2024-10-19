@@ -58,6 +58,7 @@ def test_load_command_specs_from_yaml():
             help="echo command",
             command="echo {{ capitalize }} {{ message }}",
             arguments=[ArgumentSpec(name="message")],
+            shell="/bin/bash",
             options=[
                 OptionSpec(
                     name=["-c", "--capitalize"],
@@ -69,6 +70,7 @@ def test_load_command_specs_from_yaml():
             name="my-add",
             help="add command",
             command="echo $(({{a}} + {{b}}))",
+            shell="/bin/bash",
             arguments=[
                 ArgumentSpec(name="a"),
                 ArgumentSpec(name="b"),

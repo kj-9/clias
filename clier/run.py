@@ -7,7 +7,6 @@ includes:
 - shlex - Lexical analysis of shell-style syntaxes.
 """
 
-import shlex
 from subprocess import PIPE, Popen
 
 
@@ -20,8 +19,8 @@ def run(command):
         yield line.decode("utf-8")
 
 
-def run_command(command):
-    process = Popen(shlex.split(command), stdout=PIPE, stderr=PIPE)
+def run_command(shell, command):
+    process = Popen([shell, "-c", command], stdout=PIPE, stderr=PIPE)
     stdout = None
     stderr = None
     while True:

@@ -41,6 +41,7 @@ class CommandSpec:
     arguments: list[ArgumentSpec]
     options: list[OptionSpec]
     command: str
+    shell: str | None = None
 
 
 def name_and_else(dc):
@@ -80,6 +81,8 @@ def load_command_specs_from_yaml(file_path: Path) -> list[CommandSpec]:
     if not config:
         raise ValueError("Invalid config file")
 
+    default_shell = config.get("default", {}).get("shell", "/bin/bash")
+
     command_specs = []
     for command in config["commands"]:
         arguments = [ArgumentSpec(**arg) for arg in command.get("arguments", [])]
@@ -88,6 +91,7 @@ def load_command_specs_from_yaml(file_path: Path) -> list[CommandSpec]:
             name=command["name"],
             help=command["help"],
             command=command["command"],
+            shell=command.get("shell", default_shell),
             arguments=arguments,
             options=options,
         )
@@ -144,7 +148,7 @@ def add_command(cli, spec: CommandSpec):
             return
 
         # run the shell script
-        for line in run_command(rendered):
+        for line in run_command(spec.shell, rendered):
             click.echo(line)
 
     for argument in spec.arguments:
