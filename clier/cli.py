@@ -170,11 +170,10 @@ def add_command(cli, spec: CommandSpec):
 
 # dynamically create commands
 config_file_path = get_config_file_path()
-if not config_file_path:
-    click.echo("No config file found")
+if config_file_path:
 
-specs = load_command_specs_from_yaml(config_file_path)
+    specs = load_command_specs_from_yaml(config_file_path)
 
-if specs:
-    for spec in specs:
-        add_command(cli, spec)
+    if specs:
+        for spec in specs:
+            add_command(cli, spec)
