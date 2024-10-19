@@ -2,7 +2,7 @@ from tempfile import NamedTemporaryFile
 
 from click.testing import CliRunner
 
-from clier.cli import (
+from clias.cli import (
     ArgumentSpec,
     CommandSpec,
     OptionSpec,

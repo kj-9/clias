@@ -8,7 +8,7 @@ import click
 import yaml  # type: ignore
 from jinja2 import Template
 
-from clier.run import run_command
+from clias.run import run_command
 
 
 @dataclass
@@ -52,7 +52,7 @@ def name_and_else(dc):
 
 def get_config_file_path() -> Path | None:
     # from env var
-    env_path = os.getenv("CLIER_CONFIG", None)
+    env_path = os.getenv("clias_CONFIG", None)
 
     if env_path:
         file_path = Path(env_path)
@@ -61,12 +61,12 @@ def get_config_file_path() -> Path | None:
             return file_path
 
     # current dir
-    file_path = Path(".clier.yml")
+    file_path = Path(".clias.yml")
     if file_path.exists():
         return file_path
 
     # home dir
-    file_path = Path("~/.clier.yml").expanduser()
+    file_path = Path("~/.clias.yml").expanduser()
     if file_path.exists():
         return file_path
 
@@ -121,7 +121,7 @@ def cli(ctx, dryrun):
 
 @cli.command()
 def info():
-    """Show the clier config file path to be loaded"""
+    """Show the clias config file path to be loaded"""
     file_path = get_config_file_path()
     if not file_path:
         click.echo("No config file found")

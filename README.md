@@ -38,10 +38,7 @@ Options:
   --help        Show this message and exit.
 
 Commands:
-  info        Show the clier config file path to be loaded
-  my-add      add command
-  my-echo     echo command
-  show-shell  run clier shell
+  info  Show the clias config file path to be loaded
 
 ```
 <!-- [[[end]]] -->
