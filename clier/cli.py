@@ -1,7 +1,10 @@
-import click
 from dataclasses import dataclass
+
+import click
 from jinja2 import Template
-import subprocess
+
+from clier.run import run_command
+
 
 @dataclass
 class ClickFuncArgs:
@@ -17,54 +20,41 @@ class CommandSpec:
     arguments: list[ClickFuncArgs]
     options: list[ClickFuncArgs]
 
+
 specs: list[CommandSpec] = [
     CommandSpec(
         name="my-echo",
         help="echo command",
         shell="echo {{ capitalize }} {{ message }}",
-        arguments=[
-            ClickFuncArgs(
-                arg=["message"],
-                kwargs={}
-            )
-        ],
+        arguments=[ClickFuncArgs(arg=["message"], kwargs={})],
         options=[
             ClickFuncArgs(
-                arg=["-c", "--capitalize"],
-                kwargs={"help": "capitalize the message"}
+                arg=["-c", "--capitalize"], kwargs={"help": "capitalize the message"}
             )
-        ]
+        ],
     ),
     CommandSpec(
         name="my-add",
         help="add command",
         shell="add",
-        arguments=
-        [
-            ClickFuncArgs(
-                arg=["a"],
-                kwargs={}
-            ),
-            ClickFuncArgs(
-                arg=["b"],
-                kwargs={}
-            )
+        arguments=[
+            ClickFuncArgs(arg=["a"], kwargs={}),
+            ClickFuncArgs(arg=["b"], kwargs={}),
         ],
-        options=[]
-    )
+        options=[],
+    ),
 ]
 
-from clier.run import run_command
 
 @click.group()
 @click.version_option()
 def cli():
     "turn shell script to cli"
 
+
 def create_command(spec: CommandSpec):
     @cli.command(name=spec.name, help=spec.help)
     def command_func(**kwargs):
-
         # click.echo(spec.shell)
         # click.echo(kwargs)
 
@@ -77,9 +67,6 @@ def create_command(spec: CommandSpec):
         for line in run_command(rendered):
             click.echo(line)
 
-
-
-
     for argument in spec.arguments:
         command_func = click.argument(*argument.arg, **argument.kwargs)(command_func)
 
@@ -87,6 +74,7 @@ def create_command(spec: CommandSpec):
         command_func = click.option(*option.arg, **option.kwargs)(command_func)
 
     return command_func
+
 
 # dynamically create commands
 for spec in specs:
