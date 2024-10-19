@@ -40,7 +40,10 @@ def get_config_file_path() -> Path | None:
     if file_path.exists():
         return file_path
 
-    # TODO: home dir?
+    # home dir
+    file_path = Path("~/.clier.yml").expanduser()
+    if file_path.exists():
+        return file_path
 
     return None
 
