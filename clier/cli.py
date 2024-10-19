@@ -1,5 +1,7 @@
 import click
 from dataclasses import dataclass
+from jinja2 import Template
+import subprocess
 
 @dataclass
 class ClickFuncArgs:
@@ -19,7 +21,7 @@ specs: list[CommandSpec] = [
     CommandSpec(
         name="my-echo",
         help="echo command",
-        shell="echo",
+        shell="echo {{ capitalize }} {{ message }}",
         arguments=[
             ClickFuncArgs(
                 arg=["message"],
@@ -52,18 +54,31 @@ specs: list[CommandSpec] = [
     )
 ]
 
+from clier.run import run_command
 
 @click.group()
 @click.version_option()
 def cli():
     "turn shell script to cli"
 
-
-# dynamically create commands
-for spec in specs:
+def create_command(spec: CommandSpec):
     @cli.command(name=spec.name, help=spec.help)
     def command_func(**kwargs):
-        click.echo(kwargs)
+
+        # click.echo(spec.shell)
+        # click.echo(kwargs)
+
+        # # use jinja to render the shell script
+        template = Template(spec.shell)
+        rendered = template.render(kwargs)
+        # click.echo(rendered)
+
+        # run the shell script
+        for line in run_command(rendered):
+            click.echo(line)
+
+
+
 
     for argument in spec.arguments:
         command_func = click.argument(*argument.arg, **argument.kwargs)(command_func)
@@ -71,3 +86,8 @@ for spec in specs:
     for option in spec.options:
         command_func = click.option(*option.arg, **option.kwargs)(command_func)
 
+    return command_func
+
+# dynamically create commands
+for spec in specs:
+    create_command(spec)
