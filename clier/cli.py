@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import sys
 from dataclasses import dataclass
@@ -13,12 +15,23 @@ from clier.run import run_command
 @dataclass
 class OptionSpec:
     name: list[str]
-    help: str
+    help: str | None = None
+    # TODO: implement the rest of the options
+    type: str | tuple[str] | None = None
+    default: str | int | tuple[str] | None = None
+    show_default: bool | None = None
+    nargs: int | None = None
+    multiple: bool | None = None
+    is_flag: bool | None = None
+    flag_value: str | None = None
+    prompt: bool | None = None
+    hide_input: bool | None = None
 
 
 @dataclass
 class ArgumentSpec:
     name: str
+    nargs: int | None = None
 
 
 @dataclass
@@ -28,6 +41,13 @@ class CommandSpec:
     arguments: list[ArgumentSpec]
     options: list[OptionSpec]
     command: str
+
+
+def name_and_else(dc):
+    kwargs = dc.__dict__
+    name = kwargs.pop("name")
+
+    return name, kwargs
 
 
 def get_config_file_path() -> Path | None:
@@ -105,11 +125,17 @@ def add_command(cli, spec: CommandSpec):
             click.echo(line)
 
     for argument in spec.arguments:
-        command_func = click.argument(argument.name)(command_func)
+        name, kwargs = name_and_else(argument)
+
+        # click errors out if nargs is None
+        if kwargs.get("nargs") is None:
+            kwargs.pop("nargs")
+
+        command_func = click.argument(name, **kwargs)(command_func)
 
     for option in spec.options:
-        kwargs = option.__dict__
-        name = kwargs.pop("name")
+        name, kwargs = name_and_else(option)
+
         command_func = click.option(*name, **kwargs)(command_func)
 
     return command_func
