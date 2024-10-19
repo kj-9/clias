@@ -1,4 +1,4 @@
-from .cli import cli
+from .cli import create_and_run_cli
 
 if __name__ == "__main__":
-    cli()
+    create_and_run_cli()

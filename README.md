@@ -37,7 +37,7 @@ Options:
   --help     Show this message and exit.
 
 Commands:
-  command  Command description goes here
+  info  Show the clier config file path to be loaded
 
 ```
 <!-- [[[end]]] -->
