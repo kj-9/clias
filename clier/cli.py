@@ -81,7 +81,7 @@ def load_command_specs_from_yaml(file_path: Path) -> list[CommandSpec]:
     if not config:
         raise ValueError("Invalid config file")
 
-    default_shell = config.get("default", {}).get("shell", '/bin/bash')
+    default_shell = config.get("default", {}).get("shell", "/bin/bash")
 
     command_specs = []
     for command in config.get("commands") or []:

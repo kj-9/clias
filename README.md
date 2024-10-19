@@ -33,8 +33,9 @@ Usage: clier [OPTIONS] COMMAND [ARGS]...
   Turn shell script into cli command
 
 Options:
-  --version  Show the version and exit.
-  --help     Show this message and exit.
+  -d, --dryrun  dry run mode, only show the rendered command
+  --version     Show the version and exit.
+  --help        Show this message and exit.
 
 Commands:
   info  Show the clier config file path to be loaded
