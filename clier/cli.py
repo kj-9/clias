@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import os
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -171,7 +170,6 @@ def add_command(cli, spec: CommandSpec):
 # dynamically create commands
 config_file_path = get_config_file_path()
 if config_file_path:
-
     specs = load_command_specs_from_yaml(config_file_path)
 
     if specs:
