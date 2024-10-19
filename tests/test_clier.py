@@ -26,6 +26,19 @@ def test_info():
         assert result.exit_code == 0
 
 
+def test_load_empty_yaml():
+    sample_yaml = """
+    commands:
+    """
+
+    with NamedTemporaryFile(delete=False, mode="w") as temp_file:
+        temp_file.write(sample_yaml)
+        temp_file_path = temp_file.name
+
+    loaded_specs = load_command_specs_from_yaml(temp_file_path)
+    assert loaded_specs == []
+
+
 def test_load_command_specs_from_yaml():
     sample_yaml = """
     commands:
