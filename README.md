@@ -5,7 +5,7 @@
 [![Tests](https://github.com/kj-9/clier/actions/workflows/ci.yml/badge.svg)](https://github.com/kj-9/clier/actions/workflows/ci.yml)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/kj-9/clier/blob/master/LICENSE)
 
-turn shell script to cli
+Turn shell script into cli command
 
 ## Installation
 
@@ -30,7 +30,7 @@ cog.out(
 ```bash
 Usage: clier [OPTIONS] COMMAND [ARGS]...
 
-  turn shell script to cli
+  Turn shell script into cli command
 
 Options:
   --version  Show the version and exit.

@@ -74,7 +74,7 @@ def load_command_specs_from_yaml(file_path: Path) -> list[CommandSpec]:
 @click.group()
 @click.version_option()
 def cli():
-    "turn shell script to cli"
+    "Turn shell script into cli command"
 
 
 @cli.command()

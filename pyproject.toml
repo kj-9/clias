@@ -1,7 +1,7 @@
 [project]
 name = "clier"
 version = "0.1.0a"
-description = "Turn shell script to cli"
+description = "Turn shell script into cli command"
 readme = "README.md"
 authors = [{name = "kj-9"}]
 license = {text = "Apache-2.0"}
