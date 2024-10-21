@@ -1,6 +1,6 @@
 [project]
 name = "clias"
-version = "0.1.0a"
+version = "0.1.0a1"
 description = "Turn shell script into cli command"
 readme = "README.md"
 authors = [{name = "kj-9"}]
